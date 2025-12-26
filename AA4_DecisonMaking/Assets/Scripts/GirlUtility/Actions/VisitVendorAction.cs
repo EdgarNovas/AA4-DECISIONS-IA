@@ -1,48 +1,81 @@
+using Edgar;
 using UnityEngine;
 
 public class VisitVendorAction : UtilityAction
 {
-    public enum VendorType { Food, Fun }
-    public VendorType type;
+    public VendorType targetType;
+
+    // Inyección de dependencias (Referencias)
+    private Unit3D movementController;
+    private Grid3D grid; // Para calcular distancia Octil real
+
+    // --- CACHÉ PARA OPTIMIZACIÓN 
+    private Vendor currentTargetVendor;
+    private float lastSearchTime = 0f;
+    private float searchInterval = 1.0f; // Buscar nuevo vendedor solo cada 1 segundo
+
+    void Start()
+    {
+        movementController = GetComponent<Unit3D>();
+        grid = FindObjectOfType<Grid3D>();
+    }
 
     public override float CalculateUtility(GirlStats stats)
     {
-        float score = 0f;
-        Transform target = null;
+        // 1. ¿Qué tan fuerte es la necesidad?
+        float needScore = (targetType == VendorType.Food) ? stats.Hunger : stats.Boredom;
+        needScore /= 100f;
 
-        // 1. Evaluamos qué necesidad estamos cubriendo
-        if (type == VendorType.Food)
+        // Si no tiene hambre, ni te molestes en buscar vendedores (Ahorro de CPU brutal)
+        if (needScore < 0.1f) return 0f;
+
+        // 2. Encontrar al vendedor más cercano (Usando Cache)
+        if (currentTargetVendor == null || Time.time > lastSearchTime + searchInterval)
         {
-            score = stats.Hunger / 100f; // Normalizamos
-            target = stats.NearestFoodVendor;
-        }
-        else if (type == VendorType.Fun)
-        {
-            score = stats.Boredom / 100f;
-            target = stats.NearestFunVendor;
+            currentTargetVendor = VendorManager.Instance.GetClosestVendor(transform.position, targetType);
+            lastSearchTime = Time.time + Random.Range(0f, 0.5f); // Offset aleatorio para que no busquen todas en el mismo frame
         }
 
-        // 2. FACTOR DE CORRECCIÓN IMPORTANTE:
-        // Si no hay un vendedor cerca, la utilidad debería ser 0 
-        // (no puede comprar si no hay tienda).
-        if (target == null) return 0f;
+        // Si no existe ningún vendedor en el mundo de ese tipo
+        if (currentTargetVendor == null) return 0f;
 
-        // 3. Evaluamos con la curva (ej. si tiene poca hambre, el score será bajo)
-        return utilityCurve.Evaluate(score);
+        // 3. Calcular distancia usando tu Grid System (Octil)
+        // Usamos Vector3 distance rápido primero para la utilidad general
+        float dist = Vector3.Distance(transform.position, currentTargetVendor.transform.position);
+
+        // Normalización inversa: Más cerca (0) = Más utilidad (1)
+        // Asumimos que 50 metros es "demasiado lejos"
+        float distanceFactor = 1f - Mathf.Clamp01(dist / 50f);
+
+        // Score Final: Promedio ponderado (La necesidad importa más que la distancia)
+        float finalScore = (needScore * 0.7f) + (distanceFactor * 0.3f);
+
+        return utilityCurve.Evaluate(finalScore);
     }
 
     public override void Execute(GirlStats stats)
     {
         base.Execute(stats);
 
-        // Determinar destino
-        Transform destination = (type == VendorType.Food) ? stats.NearestFoodVendor : stats.NearestFunVendor;
+        // Seguridad: Si el vendedor desapareció (se destruyó) justo ahora
+        if (currentTargetVendor == null) return;
 
-        if (destination != null)
+        // Usamos el punto de compra si existe, si no, la posición del vendedor
+        Vector3 targetPos = (currentTargetVendor.customerStandPoint != null)
+                            ? currentTargetVendor.customerStandPoint.position
+                            : currentTargetVendor.transform.position;
+
+        // Moverse usando tu sistema Pathfinding
+        if (movementController != null)
         {
-            Debug.Log($"Yendo al vendedor de {type}");
-            // Moverse al vendedor e interactuar
-            // Al llegar: stats.Hunger = 0;
+            movementController.MoveToPosition(targetPos);
+
+            // Interacción simple por distancia
+            if (Vector3.Distance(transform.position, targetPos) < 1.5f)
+            {
+                currentTargetVendor.ServeCustomer(stats);
+                currentTargetVendor = null; // Reseteamos target para buscar uno nuevo la próxima vez si nos movemos
+            }
         }
     }
 }

@@ -4,21 +4,21 @@ public class FindItemAction : UtilityAction
 {
     public override float CalculateUtility(GirlStats stats)
     {
-        // Si ya tiene algo en la mano, la utilidad de buscar otro es 0.
+        // Si YA tiene un objeto, no busques más (Utilidad 0)
         if (stats.HasItemToThrow) return 0f;
 
-        // Si no hay objetos cerca, utilidad 0.
-        if (stats.NearestLootItem == null) return 0f;
-
-        // Si no tiene nada, le damos una utilidad base constante o aleatoria
-        // para simular "curiosidad".
-        return utilityCurve.Evaluate(0.7f); // Un valor fijo moderadamente alto
+        // Aquí deberías usar un "ItemManager" similar al "VendorManager" 
+        // si quieres hacerlo 100% SOLID para encontrar objetos, 
+        // o por ahora devolver un valor fijo si solo estás probando.
+        return utilityCurve.Evaluate(0.5f);
     }
 
     public override void Execute(GirlStats stats)
     {
         base.Execute(stats);
-        Debug.Log("¡mira! He encontrado una moneda/munición.");
-        // Ir al objeto, cogerlo, marcar stats.HasItemToThrow = true;
+        Debug.Log("¡He encontrado algo del suelo!");
+
+        // Simplemente marcamos que lo tiene
+        stats.HasItemToThrow = true;
     }
 }

@@ -117,7 +117,7 @@ public class PathFinding : MonoBehaviour
         return waypoints.ToArray();
     }
 
-    public int GetDistance(Node nodeA, Node nodeB)
+    public static int GetDistance(Node nodeA, Node nodeB)
     {
         // la Y es la z
         int distanceX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
@@ -128,6 +128,7 @@ public class PathFinding : MonoBehaviour
 
         return 14 * distanceX + 10 * (distanceY - distanceX);
     }
+
 
 
     // Coste = gCost (distancia desde inicio) + hCost (distancia al final)

@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class Unit3D : MonoBehaviour
     [SerializeField] float speed = 5f; 
     [SerializeField] float turnSpeed = 10f;
     [SerializeField] bool isPlayerControlled = true;
+    public bool isAIControlled = false;
     // Variables de Pathfinding A*
     private Vector3[] path;
     private int targetIndex;
@@ -25,9 +27,21 @@ public class Unit3D : MonoBehaviour
     }
 
 
+
+    // Acciones le digan a dónde ir
+    public void MoveToPosition(Vector3 targetPosition)
+    {
+        // Solo pedimos camino si la distancia es relevante para no saturar
+        if (Vector3.Distance(transform.position, targetPosition) > 0.5f)
+        {
+            PathRequestManager.RequestPath(transform.position, targetPosition, OnPathFound);
+        }
+    }
+
+
     private void Update()
     {
-        if(isPlayerControlled)
+        if(isPlayerControlled && !isAIControlled)
         {
             if (Input.GetMouseButtonDown(0))
             {
