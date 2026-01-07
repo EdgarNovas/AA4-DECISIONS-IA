@@ -12,6 +12,7 @@ public class Unit3D : MonoBehaviour
     public bool isAIControlled = false;
     // Variables de Pathfinding A*
     private Vector3[] path;
+    private Vector3 offSet;
     private int targetIndex;
 
     
@@ -24,6 +25,7 @@ public class Unit3D : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        offSet = new Vector3 (0, 1, 0);
     }
 
 
@@ -97,7 +99,7 @@ public class Unit3D : MonoBehaviour
         Vector3 oldPos = transform.position;
 
         // Moverse hacia el waypoint
-        transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.fixedDeltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, currentWaypoint + offSet, speed * Time.fixedDeltaTime);
 
         // Calcular la velocidad real para la animación
         Vector3 velocity = (transform.position - oldPos) / Time.fixedDeltaTime;
