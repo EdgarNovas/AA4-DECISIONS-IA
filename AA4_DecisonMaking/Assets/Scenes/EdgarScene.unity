@@ -499,8 +499,9 @@ GameObject:
   - component: {fileID: 1037082904}
   - component: {fileID: 1037082903}
   - component: {fileID: 1037082902}
-  - component: {fileID: 1037082906}
+  - component: {fileID: 1037082908}
   - component: {fileID: 1037082907}
+  - component: {fileID: 1037082906}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -627,6 +628,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4be9bfadcbe63ab4689911ec43a1b0f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1037082908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037082901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a168e2fa008ca114682b8fc90f202d6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hunger: 0
+  Boredom: 0
+  npcRandomHungerOffset: {x: 2, y: 5}
+  npcRandomBoredomOffset: {x: 2, y: 5}
 --- !u!1 &1119493616
 GameObject:
   m_ObjectHideFlags: 0
