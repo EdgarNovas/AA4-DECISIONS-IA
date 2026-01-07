@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GoToFoodVendorState : State
+public class GoToFunVendorState : State
 {
     private StateMachine fsm;
     private Unit3D unit;
@@ -11,7 +11,7 @@ public class GoToFoodVendorState : State
     private float waitTimer;
     private float waitTime = 3f;
 
-    public GoToFoodVendorState(StateMachine fsm, Unit3D unit)
+    public GoToFunVendorState(StateMachine fsm, Unit3D unit)
     {
         this.fsm = fsm;
         this.unit = unit;
@@ -22,7 +22,7 @@ public class GoToFoodVendorState : State
         arrived = false;
         waitTimer = 0f;
 
-        targetVendor = VendorManager.Instance.GetClosestVendor(unit.transform.position, VendorType.Food);
+        targetVendor = VendorManager.Instance.GetClosestVendor(unit.transform.position, VendorType.Fun);
 
         if (targetVendor == null)
         {
@@ -33,7 +33,7 @@ public class GoToFoodVendorState : State
 
     public override void Tick(float deltaTime)
     {
-        if (targetVendor == null) targetVendor = VendorManager.Instance.GetClosestVendor(unit.transform.position, VendorType.Food);
+        if (targetVendor == null) targetVendor = VendorManager.Instance.GetClosestVendor(unit.transform.position, VendorType.Fun);
 
         if (!arrived)
         {
