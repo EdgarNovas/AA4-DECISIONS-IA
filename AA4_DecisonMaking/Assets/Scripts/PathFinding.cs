@@ -75,11 +75,11 @@ public class PathFinding : MonoBehaviour
         if (pathSuccess)
         {
             waypoints = RetracePath(startNode, targetNode);
-            UnityEngine.Debug.Log($"Algoritmo: {currentAlgorithm} | Tiempo: {sw.ElapsedMilliseconds} ms | Nodos Explorados: {nodesExplored}");
+            //UnityEngine.Debug.Log($"Algoritmo: {currentAlgorithm} | Tiempo: {sw.ElapsedMilliseconds} ms | Nodos Explorados: {nodesExplored}");
         }
         else
         {
-            UnityEngine.Debug.Log($"Algoritmo: {currentAlgorithm} | No se encontró camino | Nodos Explorados: {nodesExplored}");
+            //UnityEngine.Debug.Log($"Algoritmo: {currentAlgorithm} | No se encontró camino | Nodos Explorados: {nodesExplored}");
         }
 
         requestManager.FinishedProcessingPath(waypoints, pathSuccess);
