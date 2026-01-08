@@ -9,6 +9,8 @@ public class StateMachine : MonoBehaviour
     // Diccionario para guardar las instancias de los estados
     protected Dictionary<Type, State> states = new Dictionary<Type, State>();
 
+    public event Action<Type> OnStateChanged;
+
     private void Update()
     {
         currentState?.Tick(Time.deltaTime);
@@ -32,6 +34,8 @@ public class StateMachine : MonoBehaviour
         {
             currentState = newState;
             currentState.Enter();
+
+            OnStateChanged?.Invoke(newStateType);
         }
         else
         {

@@ -29,6 +29,8 @@ public class IdleState : State
     public override void Enter()
     {
         Debug.Log("NPC Entra en idle");
+        totalWaitTimer = 0f;
+        waitTimer = 0f;
         totalWaitTime = Random.Range(minTotalWaitTime, maxTotalWaitTime);
         originalSpeed = unit.GetSpeed();
         unit.SetSpeed(originalSpeed / 2f);

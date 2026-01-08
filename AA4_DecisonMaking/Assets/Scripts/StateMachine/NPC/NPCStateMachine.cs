@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class NPCStateMachine : StateMachine
 {
-    private Unit3D unit;
+    public Unit3D unit;
 
     private void Start()
     {
