@@ -44,7 +44,7 @@ public class GoToFunVendorState : State
                 targetVendor.customerStandPoint.position
             );
 
-            if (distance < 0.2f)
+            if (distance < 1f)
             {
                 arrived = true;
             }
