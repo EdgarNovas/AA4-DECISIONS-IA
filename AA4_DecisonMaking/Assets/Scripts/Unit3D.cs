@@ -28,7 +28,7 @@ public class Unit3D : MonoBehaviour
         offSet = new Vector3 (0, 1, 0);
     }
 
-    // Acciones le digan a dónde ir
+    // Acciones le digan a dï¿½nde ir
     public void MoveToPosition(Vector3 targetPosition)
     {
         if (path != null && Vector3.Distance(targetPosition, lastTargetPosition) < 1.0f)
@@ -37,6 +37,12 @@ public class Unit3D : MonoBehaviour
         }
 
         // Solo pedimos camino si la distancia es relevante para no saturar
+
+        if (path != null && Vector3.Distance(targetPosition, lastTargetPosition) < 1.0f)
+        {
+            return;
+        }
+
         if (Vector3.Distance(transform.position, targetPosition) > 0.5f)
         {
             lastTargetPosition = targetPosition;
@@ -72,11 +78,13 @@ public class Unit3D : MonoBehaviour
         if (pathSuccessful && newPath.Length > 0)
         {
             path = newPath;
-            targetIndex = 0; // Reiniciamos el índice para empezar a seguir el nuevo camino
+            targetIndex = 0; // Reiniciamos el indice para empezar a seguir el nuevo camino
+            
         }
         else
         {
-            path = null; // No se encontró camino
+            path = null; // No se encontro camino
+            
         }
     }
 
@@ -105,7 +113,7 @@ public class Unit3D : MonoBehaviour
         // Moverse hacia el waypoint
         transform.position = Vector3.MoveTowards(transform.position, currentWaypoint + offSet, speed * Time.fixedDeltaTime);
 
-        // Calcular la velocidad real para la animación
+        // Calcular la velocidad real para la animaciï¿½n
         Vector3 velocity = (transform.position - oldPos) / Time.fixedDeltaTime;
 
         // Comprobar si hemos llegado al waypoint
@@ -131,7 +139,7 @@ public class Unit3D : MonoBehaviour
         speed = newSpeed;
     }
 
-    // OnDrawGizmos sigue siendo útil para depurar el camino
+    // OnDrawGizmos sigue siendo ï¿½til para depurar el camino
     public void OnDrawGizmos()
     {
         if (path != null)
