@@ -11,7 +11,7 @@ public class Unit3D : MonoBehaviour
     [SerializeField] bool isPlayerControlled = true;
     public bool isAIControlled = false;
     // Variables de Pathfinding A*
-    private Vector3[] path;
+    public Vector3[] path;
     private Vector3 offSet;
     private int targetIndex;
 
