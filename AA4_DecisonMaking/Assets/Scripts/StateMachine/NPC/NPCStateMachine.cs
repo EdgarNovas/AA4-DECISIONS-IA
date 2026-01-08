@@ -14,6 +14,6 @@ public class NPCStateMachine : StateMachine
         AddState(new GoToFunVendorState(this, unit));
 
         //Estado inicial
-        SwitchState(typeof(GoToFunVendorState));
+        SwitchState(typeof(IdleState));
     }
 }
