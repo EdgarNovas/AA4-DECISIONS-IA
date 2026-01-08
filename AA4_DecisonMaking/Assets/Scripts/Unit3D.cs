@@ -105,7 +105,7 @@ public class Unit3D : MonoBehaviour
         Vector3 velocity = (transform.position - oldPos) / Time.fixedDeltaTime;
 
         // Comprobar si hemos llegado al waypoint
-        if (Vector3.Distance(transform.position, currentWaypoint) < 0.01f)
+        if (Vector3.Distance(transform.position, currentWaypoint + offSet) < 0.01f)
         {
             targetIndex++; // Ir al siguiente waypoint
             if (targetIndex >= path.Length)
