@@ -144,6 +144,23 @@ public class Grid3D : MonoBehaviour
         }
     }
 
+    public Node GetRandomWalkable()
+    {
+        Node n = null;
+
+        int sizeX = GridArray.GetLength(0);
+        int sizeY = GridArray.GetLength(1);
+        do
+        {
+            int x = Random.Range(0, sizeX);
+            int y = Random.Range(0, sizeY);
+
+            n = GridArray[x, y];
+        }
+        while (!n.walkable);
+        return n;
+    }
+
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
